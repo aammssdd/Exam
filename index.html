@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختبار الأنبياء</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Lateef:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97e;
+    --gold-dark: #8a6d2f;
+    --deep: #0d1b2a;
+    --deep2: #1a2c3e;
+    --deep3: #243447;
+    --cream: #f5ead8;
+    --correct: #2ecc71;
+    --wrong: #e74c3c;
+    --text: #f0e6d3;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Amiri’, serif;
+background: var(–deep);
+color: var(–text);
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow-x: hidden;
+}
+
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 50%),
+radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.06) 0%, transparent 50%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* Stars */
+.stars {
+position: fixed;
+inset: 0;
+pointer-events: none;
+z-index: 0;
+overflow: hidden;
+}
+.star {
+position: absolute;
+background: white;
+border-radius: 50%;
+animation: twinkle var(–d, 3s) ease-in-out infinite alternate;
+opacity: 0;
+}
+@keyframes twinkle {
+from { opacity: 0; transform: scale(0.5); }
+to { opacity: var(–o, 0.6); transform: scale(1); }
+}
+
+/* Decorative arches */
+.arch-top {
+position: fixed;
+top: -60px;
+left: 50%;
+transform: translateX(-50%);
+width: 300px;
+height: 120px;
+border: 2px solid rgba(201,168,76,0.15);
+border-radius: 0 0 150px 150px;
+pointer-events: none;
+z-index: 0;
+}
+
+.container {
+position: relative;
+z-index: 1;
+width: 100%;
+max-width: 700px;
+padding: 20px;
+}
+
+/* SCREENS */
+.screen { display: none; }
+.screen.active { display: block; animation: fadeUp 0.5s ease forwards; }
+
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(30px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* CARD */
+.card {
+background: linear-gradient(135deg, var(–deep2), var(–deep3));
+border: 1px solid rgba(201,168,76,0.3);
+border-radius: 20px;
+padding: 40px 35px;
+box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(201,168,76,0.1);
+position: relative;
+overflow: hidden;
+}
+
+.card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 3px;
+background: linear-gradient(90deg, transparent, var(–gold), transparent);
+}
+
+/* ORNAMENT */
+.ornament {
+text-align: center;
+color: var(–gold);
+font-size: 28px;
+letter-spacing: 8px;
+margin-bottom: 8px;
+opacity: 0.7;
+}
+
+/* TITLES */
+.main-title {
+font-family: ‘Lateef’, serif;
+font-size: clamp(36px, 8vw, 56px);
+text-align: center;
+color: var(–gold-light);
+line-height: 1.2;
+margin-bottom: 10px;
+text-shadow: 0 0 30px rgba(201,168,76,0.3);
+}
+
+.subtitle {
+text-align: center;
+color: rgba(240,230,211,0.6);
+font-size: 18px;
+margin-bottom: 30px;
+line-height: 1.7;
+}
+
+/* DIVIDER */
+.divider {
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 20px 0;
+}
+.divider-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent); }
+.divider-diamond {
+width: 8px; height: 8px;
+background: var(–gold);
+transform: rotate(45deg);
+opacity: 0.6;
+}
+
+/* STATS */
+.stats-row {
+display: flex;
+justify-content: center;
+gap: 30px;
+margin-bottom: 30px;
+}
+.stat-item {
+text-align: center;
+padding: 12px 20px;
+background: rgba(201,168,76,0.08);
+border: 1px solid rgba(201,168,76,0.2);
+border-radius: 12px;
+}
+.stat-num { font-size: 26px; color: var(–gold-light); font-weight: 700; }
+.stat-lbl { font-size: 13px; color: rgba(240,230,211,0.5); margin-top: 2px; }
+
+/* BUTTON */
+.btn {
+display: block;
+width: 100%;
+padding: 16px 30px;
+background: linear-gradient(135deg, var(–gold-dark), var(–gold), var(–gold-light));
+color: var(–deep);
+border: none;
+border-radius: 14px;
+font-family: ‘Amiri’, serif;
+font-size: 20px;
+font-weight: 700;
+cursor: pointer;
+transition: all 0.3s ease;
+box-shadow: 0 4px 20px rgba(201,168,76,0.3);
+letter-spacing: 1px;
+}
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 8px 30px rgba(201,168,76,0.4);
+background: linear-gradient(135deg, var(–gold), var(–gold-light), #f5dc9e);
+}
+.btn:active { transform: translateY(0); }
+
+.btn-outline {
+background: transparent;
+border: 2px solid var(–gold);
+color: var(–gold-light);
+margin-top: 12px;
+}
+.btn-outline:hover {
+background: rgba(201,168,76,0.1);
+box-shadow: 0 8px 30px rgba(201,168,76,0.2);
+}
+
+/* PROGRESS */
+.progress-wrap {
+margin-bottom: 25px;
+}
+.progress-info {
+display: flex;
+justify-content: space-between;
+font-size: 14px;
+color: rgba(240,230,211,0.5);
+margin-bottom: 8px;
+}
+.progress-bar {
+height: 6px;
+background: rgba(255,255,255,0.08);
+border-radius: 10px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–gold-dark), var(–gold-light));
+border-radius: 10px;
+transition: width 0.5s ease;
+}
+
+/* QUESTION */
+.q-number {
+font-size: 13px;
+color: var(–gold);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 12px;
+opacity: 0.8;
+}
+.q-text {
+font-family: ‘Lateef’, serif;
+font-size: clamp(22px, 4vw, 30px);
+color: var(–cream);
+line-height: 1.6;
+margin-bottom: 28px;
+text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* OPTIONS */
+.options { display: flex; flex-direction: column; gap: 12px; }
+
+.option-btn {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 16px 20px;
+background: rgba(255,255,255,0.04);
+border: 1.5px solid rgba(201,168,76,0.2);
+border-radius: 14px;
+cursor: pointer;
+transition: all 0.25s ease;
+text-align: right;
+font-family: ‘Amiri’, serif;
+font-size: 18px;
+color: var(–text);
+width: 100%;
+}
+.option-btn:hover:not(:disabled) {
+background: rgba(201,168,76,0.1);
+border-color: rgba(201,168,76,0.5);
+transform: translateX(-3px);
+}
+.option-btn:disabled { cursor: default; }
+
+.option-letter {
+width: 34px;
+height: 34px;
+border-radius: 50%;
+background: rgba(201,168,76,0.15);
+border: 1px solid rgba(201,168,76,0.3);
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 15px;
+color: var(–gold-light);
+flex-shrink: 0;
+transition: all 0.25s;
+}
+
+.option-btn.correct {
+background: rgba(46,204,113,0.15);
+border-color: var(–correct);
+animation: correctPulse 0.4s ease;
+}
+.option-btn.correct .option-letter {
+background: var(–correct);
+color: white;
+border-color: var(–correct);
+}
+.option-btn.wrong {
+background: rgba(231,76,60,0.15);
+border-color: var(–wrong);
+animation: shake 0.4s ease;
+}
+.option-btn.wrong .option-letter {
+background: var(–wrong);
+color: white;
+border-color: var(–wrong);
+}
+.option-btn.reveal-correct {
+background: rgba(46,204,113,0.08);
+border-color: rgba(46,204,113,0.5);
+}
+.option-btn.reveal-correct .option-letter {
+background: rgba(46,204,113,0.3);
+color: var(–correct);
+border-color: var(–correct);
+}
+
+@keyframes correctPulse {
+0% { transform: scale(1); }
+50% { transform: scale(1.02); }
+100% { transform: scale(1); }
+}
+@keyframes shake {
+0%,100% { transform: translateX(0); }
+25% { transform: translateX(-6px); }
+75% { transform: translateX(6px); }
+}
+
+/* FEEDBACK */
+.feedback {
+margin-top: 20px;
+padding: 16px 20px;
+border-radius: 14px;
+font-size: 17px;
+line-height: 1.6;
+animation: fadeUp 0.3s ease;
+display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct-fb {
+background: rgba(46,204,113,0.12);
+border: 1px solid rgba(46,204,113,0.3);
+color: #a8f5c8;
+}
+.feedback.wrong-fb {
+background: rgba(231,76,60,0.12);
+border: 1px solid rgba(231,76,60,0.3);
+color: #f5a8a8;
+}
+.feedback-icon { font-size: 22px; margin-left: 8px; }
+
+/* NEXT BTN */
+.next-btn {
+margin-top: 20px;
+display: none;
+}
+.next-btn.show { display: block; }
+
+/* RESULTS */
+.result-circle {
+width: 140px;
+height: 140px;
+border-radius: 50%;
+margin: 0 auto 25px;
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+position: relative;
+}
+.result-circle svg {
+position: absolute;
+top: 0; left: 0;
+transform: rotate(-90deg);
+}
+.result-circle-inner {
+font-size: 34px;
+font-weight: 700;
+color: var(–gold-light);
+z-index: 1;
+}
+.result-circle-sub { font-size: 13px; color: rgba(240,230,211,0.5); z-index: 1; }
+
+.result-title {
+font-family: ‘Lateef’, serif;
+font-size: 38px;
+text-align: center;
+color: var(–gold-light);
+margin-bottom: 8px;
+}
+.result-msg {
+text-align: center;
+color: rgba(240,230,211,0.6);
+font-size: 18px;
+margin-bottom: 25px;
+line-height: 1.7;
+}
+
+/* REVIEW */
+.review-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 25px; }
+.review-item {
+padding: 16px 18px;
+border-radius: 14px;
+border: 1px solid;
+}
+.review-item.r-correct {
+background: rgba(46,204,113,0.07);
+border-color: rgba(46,204,113,0.25);
+}
+.review-item.r-wrong {
+background: rgba(231,76,60,0.07);
+border-color: rgba(231,76,60,0.25);
+}
+.review-q { font-size: 16px; color: var(–cream); margin-bottom: 8px; line-height: 1.5; }
+.review-answer { font-size: 15px; }
+.r-correct .review-answer { color: #7ee8a2; }
+.r-wrong .review-answer { color: #f5a8a8; }
+.review-correct-ans { font-size: 14px; color: rgba(240,230,211,0.5); margin-top: 4px; }
+.review-icon { margin-left: 6px; }
+
+/* SHARE */
+.share-row { display: flex; gap: 10px; margin-top: 14px; }
+.share-btn {
+flex: 1;
+padding: 12px;
+border-radius: 12px;
+border: 1px solid rgba(201,168,76,0.3);
+background: rgba(201,168,76,0.07);
+color: var(–gold-light);
+cursor: pointer;
+font-family: ‘Amiri’, serif;
+font-size: 16px;
+transition: all 0.2s;
+}
+.share-btn:hover {
+background: rgba(201,168,76,0.15);
+border-color: var(–gold);
+}
+
+/* SCROLL */
+#result-screen { max-height: 90vh; overflow-y: auto; }
+#result-screen::-webkit-scrollbar { width: 5px; }
+#result-screen::-webkit-scrollbar-track { background: transparent; }
+#result-screen::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 10px; }
+
+/* BADGE */
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 6px 14px;
+border-radius: 30px;
+font-size: 15px;
+margin: 0 auto 20px;
+border: 1px solid;
+}
+.badge-gold { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.3); color: var(–gold-light); }
+.badge-silver { background: rgba(192,192,192,0.12); border-color: rgba(192,192,192,0.3); color: #d0d0d0; }
+.badge-bronze { background: rgba(176,141,87,0.12); border-color: rgba(176,141,87,0.3); color: #c8a86e; }
+.badge-wrap { text-align: center; }
+</style>
+
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="arch-top"></div>
+
+<div class="container">
+
+  <!-- WELCOME SCREEN -->
+
+  <div class="screen active" id="welcome-screen">
+    <div class="card">
+      <div class="ornament">✦ ✦ ✦</div>
+      <h1 class="main-title">اختبار الأنبياء</h1>
+      <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+      <p class="subtitle">اختبر معلوماتك عن أنبياء الله الكرام<br>عليهم الصلاة والسلام</p>
+
+```
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">15</div>
+      <div class="stat-lbl">سؤالاً</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-lbl">خيارات</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">∞</div>
+      <div class="stat-lbl">محاولات</div>
+    </div>
+  </div>
+
+  <button class="btn" onclick="startQuiz()">🌙 ابدأ الاختبار</button>
+</div>
+```
+
+  </div>
+
+  <!-- QUIZ SCREEN -->
+
+  <div class="screen" id="quiz-screen">
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span id="q-counter">سؤال ١ من ١٥</span>
+          <span id="score-display">النقاط: ٠</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+```
+  <div class="q-number" id="q-number">السؤال الأول</div>
+  <div class="q-text" id="q-text">...</div>
+
+  <div class="options" id="options-container"></div>
+
+  <div class="feedback" id="feedback"></div>
+
+  <button class="btn next-btn" id="next-btn" onclick="nextQuestion()">التالي ←</button>
+</div>
+```
+
+  </div>
+
+  <!-- RESULT SCREEN -->
+
+  <div class="screen" id="result-screen">
+    <div class="card">
+      <div class="ornament">★ ★ ★</div>
+      <div class="result-title" id="result-title">أحسنت!</div>
+
+```
+  <div style="position:relative;width:140px;height:140px;margin:0 auto 20px;">
+    <svg width="140" height="140">
+      <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="10"/>
+      <circle cx="70" cy="70" r="60" fill="none" stroke="url(#grad)" stroke-width="10"
+        stroke-dasharray="377" id="result-arc" stroke-dashoffset="377" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#8a6d2f"/>
+          <stop offset="100%" style="stop-color:#e8c97e"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <div class="result-circle-inner" id="result-score">0/15</div>
+      <div class="result-circle-sub" id="result-pct">٠٪</div>
+    </div>
+  </div>
+
+  <div class="badge-wrap"><div class="badge" id="result-badge">⭐ مبتدئ</div></div>
+  <div class="result-msg" id="result-msg">...</div>
+
+  <div class="divider"><div class="divider-line"></div><div class="divider-diamond"></div><div class="divider-line"></div></div>
+
+  <p style="font-size:16px;color:var(--gold);margin-bottom:14px;text-align:center;">مراجعة الإجابات</p>
+
+  <div class="review-list" id="review-list"></div>
+
+  <div class="share-row">
+    <button class="share-btn" onclick="copyResult()">📋 نسخ النتيجة</button>
+    <button class="share-btn" onclick="shareResult()">📤 مشاركة</button>
+  </div>
+  <button class="btn" onclick="restartQuiz()" style="margin-top:14px;">🔄 إعادة الاختبار</button>
+</div>
+```
+
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "ما هو أول الأنبياء الذين أُرسلوا إلى البشر؟",
+    options: ["إدريس عليه السلام", "نوح عليه السلام", "آدم عليه السلام", "إبراهيم عليه السلام"],
+    answer: 2,
+    explain: "آدم عليه السلام هو أبو البشر وأول نبي أُرسل إلى الأرض."
+  },
+  {
+    q: "كم سنة قضى نوح عليه السلام يدعو قومه؟",
+    options: ["٩٠٠ سنة", "٩٥٠ سنة", "٨٥٠ سنة", "١٠٠٠ سنة"],
+    answer: 1,
+    explain: "مكث نوح عليه السلام يدعو قومه ٩٥٠ سنة كما ذكر القرآن الكريم."
+  },
+  {
+    q: "من هو النبي الذي أُلقي في النار فكانت عليه برداً وسلاماً؟",
+    options: ["موسى عليه السلام", "يوسف عليه السلام", "إبراهيم عليه السلام", "إسماعيل عليه السلام"],
+    answer: 2,
+    explain: "إبراهيم عليه السلام ألقاه قومه في النار لكن الله جعلها برداً وسلاماً عليه."
+  },
+  {
+    q: "من هو النبي الذي ابتلعه الحوت؟",
+    options: ["أيوب عليه السلام", "يونس عليه السلام", "إلياس عليه السلام", "إسحاق عليه السلام"],
+    answer: 1,
+    explain: "يونس عليه السلام ابتلعه الحوت، ودعا ربه في الظلمات فاستجاب له."
+  },
+  {
+    q: "ما هو الكتاب الذي أُنزل على موسى عليه السلام؟",
+    options: ["الإنجيل", "الزبور", "التوراة", "الصحف"],
+    answer: 2,
+    explain: "التوراة هي الكتاب المنزّل على موسى عليه السلام."
+  },
+  {
+    q: "من هو النبي الذي كان يتكلم مع الطير والحيوانات؟",
+    options: ["داود عليه السلام", "سليمان عليه السلام", "إدريس عليه السلام", "لقمان"],
+    answer: 1,
+    explain: "سليمان عليه السلام أُوتي منطق الطير وعلّمه الله لغة الحيوانات."
+  },
+  {
+    q: "في أي مدينة وُلد النبي محمد صلى الله عليه وسلم؟",
+    options: ["المدينة المنورة", "الطائف", "مكة المكرمة", "القدس"],
+    answer: 2,
+    explain: "وُلد النبي محمد ﷺ في مكة المكرمة عام الفيل."
+  },
+  {
+    q: "من هو النبي الذي كان نجاراً وبنى السفينة؟",
+    options: ["نوح عليه السلام", "إبراهيم عليه السلام", "هود عليه السلام", "صالح عليه السلام"],
+    answer: 0,
+    explain: "نوح عليه السلام بنى السفينة بأمر من الله لينجو هو والمؤمنون من الطوفان."
+  },
+  {
+    q: "ما هو الكتاب الذي أُنزل على داود عليه السلام؟",
+    options: ["التوراة", "الإنجيل", "الزبور", "القرآن"],
+    answer: 2,
+    explain: "الزبور هو الكتاب الذي أُنزل على داود عليه السلام."
+  },
+  {
+    q: "كم عدد الأنبياء المذكورين بالاسم في القرآن الكريم؟",
+    options: ["١٨ نبياً", "٢٥ نبياً", "٣٠ نبياً", "١٢٤ نبياً"],
+    answer: 1,
+    explain: "ذُكر ٢٥ نبياً بأسمائهم في القرآن الكريم."
+  },
+  {
+    q: "من هو النبي الذي صبر على مرضه سنوات طويلة؟",
+    options: ["يعقوب عليه السلام", "أيوب عليه السلام", "يوسف عليه السلام", "زكريا عليه السلام"],
+    answer: 1,
+    explain: "أيوب عليه السلام ضرب به المثل في الصبر على البلاء."
+  },
+  {
+    q: "من هو النبي الذي رُفع إلى السماء حياً؟",
+    options: ["إلياس عليه السلام", "إدريس عليه السلام", "عيسى عليه السلام", "ب وج"],
+    answer: 3,
+    explain: "إدريس عليه السلام رُفع مكاناً علياً، وعيسى عليه السلام رُفع إلى السماء ولم يُصلب."
+  },
+  {
+    q: "ما اسم والد النبي إبراهيم عليه السلام في القرآن الكريم؟",
+    options: ["عمران", "آزر", "متى", "لاوي"],
+    answer: 1,
+    explain: "ذكر القرآن الكريم أن اسم أبي إبراهيم عليه السلام هو آزر."
+  },
+  {
+    q: "من هو خاتم الأنبياء والمرسلين؟",
+    options: ["عيسى عليه السلام", "موسى عليه السلام", "محمد صلى الله عليه وسلم", "إبراهيم عليه السلام"],
+    answer: 2,
+    explain: "محمد ﷺ هو خاتم الأنبياء والمرسلين، لا نبي بعده."
+  },
+  {
+    q: "من هو النبي الذي أُرسل إلى قوم عاد؟",
+    options: ["صالح عليه السلام", "شعيب عليه السلام", "هود عليه السلام", "لوط عليه السلام"],
+    answer: 2,
+    explain: "هود عليه السلام أُرسل إلى قوم عاد الذين أُهلكوا بريح صرصر عاتية."
+  }
+];
+
+const ordinals = ['الأول','الثاني','الثالث','الرابع','الخامس','السادس','السابع','الثامن','التاسع','العاشر','الحادي عشر','الثاني عشر','الثالث عشر','الرابع عشر','الخامس عشر'];
+const letters = ['أ','ب','ج','د'];
+
+let currentQ = 0;
+let score = 0;
+let answers = [];
+let answered = false;
+
+function toArabicNum(n) {
+  return n.toString().replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function startQuiz() {
+  currentQ = 0; score = 0; answers = []; answered = false;
+  showScreen('quiz-screen');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  const q = questions[currentQ];
+  document.getElementById('q-counter').textContent = `سؤال ${toArabicNum(currentQ+1)} من ${toArabicNum(questions.length)}`;
+  document.getElementById('score-display').textContent = `النقاط: ${toArabicNum(score)}`;
+  document.getElementById('q-number').textContent = `السؤال ${ordinals[currentQ]}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('progress-fill').style.width = `${(currentQ/questions.length)*100}%`;
+
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  const nb = document.getElementById('next-btn');
+  nb.className = 'btn next-btn';
+  nb.textContent = currentQ < questions.length - 1 ? 'التالي ←' : 'عرض النتيجة 🏆';
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-letter">${letters[i]}</span><span>${opt}</span>`;
+    btn.onclick = () => selectAnswer(i);
+    container.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosen) {
+  if (answered) return;
+  answered = true;
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.option-btn');
+  const correct = q.answer === chosen;
+
+  btns[chosen].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) btns[q.answer].classList.add('reveal-correct');
+  btns.forEach(b => b.disabled = true);
+
+  if (correct) score++;
+  answers.push({ q: q.q, chosen, correct, correctAns: q.answer, options: q.options, explain: q.explain });
+
+  const fb = document.getElementById('feedback');
+  fb.className = `feedback ${correct ? 'correct-fb' : 'wrong-fb'} show`;
+  fb.innerHTML = correct
+    ? `<span class="feedback-icon">✅</span> <strong>إجابة صحيحة!</strong> ${q.explain}`
+    : `<span class="feedback-icon">❌</span> <strong>إجابة خاطئة.</strong> الإجابة الصحيحة: <strong>${q.options[q.answer]}</strong>. ${q.explain}`;
+
+  document.getElementById('next-btn').classList.add('show');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  showScreen('result-screen');
+  const pct = Math.round((score / questions.length) * 100);
+  document.getElementById('result-score').textContent = `${score}/${questions.length}`;
+  document.getElementById('result-pct').textContent = `${toArabicNum(pct)}٪`;
+
+  // Animate arc
+  setTimeout(() => {
+    const arc = document.getElementById('result-arc');
+    const offset = 377 - (377 * pct / 100);
+    arc.style.transition = 'stroke-dashoffset 1.2s ease';
+    arc.style.strokeDashoffset = offset;
+  }, 200);
+
+  let title, msg, badge, badgeClass;
+  if (pct === 100) { title='ممتاز! 🌟'; msg='مبارك! أجبت على جميع الأسئلة بشكل صحيح. أنت حقاً عالم بسيرة الأنبياء!'; badge='🥇 حافظ الأنبياء'; badgeClass='badge-gold'; }
+  else if (pct >= 80) { title='أحسنت! 🎉'; msg='نتيجة رائعة! معلوماتك عن الأنبياء قوية جداً.'; badge='🥈 متميز'; badgeClass='badge-gold'; }
+  else if (pct >= 60) { title='جيد 👍'; msg='نتيجة جيدة! يمكنك تحسينها بمزيد من القراءة.'; badge='🥉 جيد'; badgeClass='badge-silver'; }
+  else { title='حاول مجدداً 💪'; msg='لا بأس! الاستمرار في التعلم يُحسّن النتائج.'; badge='📚 متعلم'; badgeClass='badge-bronze'; }
+
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-msg').textContent = msg;
+  const badgeEl = document.getElementById('result-badge');
+  badgeEl.textContent = badge;
+  badgeEl.className = `badge ${badgeClass}`;
+
+  const list = document.getElementById('review-list');
+  list.innerHTML = '';
+  answers.forEach((a, i) => {
+    const div = document.createElement('div');
+    div.className = `review-item ${a.correct ? 'r-correct' : 'r-wrong'}`;
+    div.innerHTML = `
+      <div class="review-q">${i+1}. ${a.q}</div>
+      <div class="review-answer"><span class="review-icon">${a.correct ? '✅' : '❌'}</span> إجابتك: ${a.options[a.chosen]}</div>
+      ${!a.correct ? `<div class="review-correct-ans">✔ الصحيحة: ${a.options[a.correctAns]}</div>` : ''}
+    `;
+    list.appendChild(div);
+  });
+}
+
+function copyResult() {
+  const pct = Math.round((score/questions.length)*100);
+  const txt = `🌙 اختبار الأنبياء\nنتيجتي: ${score}/${questions.length} (${pct}٪)\n${location.href}`;
+  navigator.clipboard.writeText(txt).then(() => alert('تم نسخ النتيجة! ✅'));
+}
+
+function shareResult() {
+  const pct = Math.round((score/questions.length)*100);
+  if (navigator.share) {
+    navigator.share({ title: 'اختبار الأنبياء', text: `حصلت على ${score}/${questions.length} في اختبار الأنبياء!`, url: location.href });
+  } else {
+    copyResult();
+  }
+}
+
+function restartQuiz() {
+  startQuiz();
+}
+
+// Stars
+(function() {
+  const c = document.getElementById('stars');
+  for (let i = 0; i < 80; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*100}%;
+      width:${sz}px;height:${sz}px;
+      --d:${2+Math.random()*4}s;
+      --o:${0.2+Math.random()*0.6};
+      animation-delay:${Math.random()*4}s;
+    `;
+    c.appendChild(s);
+  }
+})();
+</script>
+
+</body>
+</html>
